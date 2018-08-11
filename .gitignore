@@ -1,0 +1,27 @@
+.DS_Store
+.env
+env/*
+config.py
+.flaskenv
+*.pyc
+*.pyo
+*__pycache__
+env/
+env*
+dist/
+build/
+*.egg
+*.egg-info/
+_mailinglist
+.tox/
+.cache/
+.pytest_cache/
+.idea/
+docs/_build/
+*.sqlite
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+*,cover
