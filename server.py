@@ -19,16 +19,24 @@ def log_out():
     return {"status": 200}
 
 # Job Routes
+@app.route('/job/page/<page>', methods=['GET'])
+def job_get_all(page):
+    return job.get_page(page)
+
 @app.route('/job/<id>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def job_get(id):
     return job.get(id)
 
 @app.route('/job', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def job_post():
     data = request.get_json(silent=True)
     return job.post(data)
+
+@app.route('/job/<id>', methods=['DELETE'])
+def job_delete(id):
+    return job.delete(id)
 
 
 # JWT Token authentication  ===================================================
