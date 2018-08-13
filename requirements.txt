@@ -5,3 +5,5 @@ Flask-Security==1.7.5
 Flask-Admin==1.5.1
 Flask-SQLAlchemy==2.3.2
 sqlalchemy
+validate_email
+py3DNS

@@ -1,3 +1,5 @@
+import json
+
 from flask import render_template, request, redirect
 from flask_security import Security, logout_user, login_required
 from flask_security.utils import encrypt_password, verify_password
@@ -9,11 +11,29 @@ from application import app
 from models import User, user_datastore, Role, Job, Location
 from admin import init_admin
 from resources import job
+from response import json_response
+
+from validate_email import validate_email
+
 
 # Setup Flask-Security  =======================================================
 security = Security(app, user_datastore)
 
-@app.route('/logout')
+@app.route('/register/user', methods=['POST'])
+def register():
+    data = request.get_json(silent=True)
+    
+    exists = User.query.filter_by(email=data["email"]).first()
+    
+    if exists:
+        return json.dumps({"status": 400})
+    else:
+        user_datastore.create_user(email=data["email"], password=data["password"])
+        db.session.commit()
+        return json.dumps({"status": 200})
+    
+
+@app.route('/logout', methods=['POST'])
 def log_out():
     logout_user()
     return {"status": 200}
@@ -72,6 +92,16 @@ def create_test_models():
     user_datastore.create_user(email='test', password=encrypt_password('test'))
     user_datastore.create_user(email='test2', password=encrypt_password('test2'))
     db.session.commit()
+    
+    # Create Default Locations
+    # Central, North, South, West, East, West Des Moines
+    locations_dict = ["Central", "North", "South", "West", "East", "West Des Moines"]
+    
+    for loc in locations_dict:
+        new_location = Location(loc)
+        db.session.add(new_location)
+        db.session.commit()
+        db.session.flush()
 
 
 @app.before_first_request
@@ -86,4 +116,5 @@ if __name__ == '__main__':
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        
     app.run()

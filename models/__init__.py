@@ -10,4 +10,5 @@ from models.role import Role
 from models.job import Job
 from models.location import Location
 
+
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)

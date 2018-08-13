@@ -9,7 +9,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True)
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
-    available = db.Column(db.Integer)
+    available = db.Column(db.Integer, default=0)
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
     confirmed_at = db.Column(db.DateTime())
